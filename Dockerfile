@@ -6,7 +6,8 @@ ENV DOMAIN=yourdomain
 RUN apk add --no-cache certbot
 
 COPY entry.sh /entry.sh
+RUN chmod +x /entry.sh
 
-VOLUME ['/znc-data']
+VOLUME ["/znc-data"]
 
-ENTRYPOINT ['/entry.sh']
+ENTRYPOINT ["/entry.sh"]

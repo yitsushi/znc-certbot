@@ -1,0 +1,29 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: generate-znc-cert
+spec:
+  schedule: '0 0 1 * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: znc-data-volume
+              persistentVolumeClaim:
+                claimName: znc-data
+          containers:
+            - name: generate-znc-cert
+              image: yitsushi/znc-certbot:latest
+              env:
+                - name: EMAIL
+                  value: "efertone@pm.me"
+                - name: DOMAIN
+                  value: "master.code-infection.com"
+              volumeMounts:
+                - mountPath: /znc-data
+                  name: znc-data-volume
+              ports:
+                containerPort: 80
+          restartPolicy: OnFailure
